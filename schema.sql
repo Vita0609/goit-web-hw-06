@@ -1,0 +1,29 @@
+CREATE TABLE groups (
+    id SERIAL PRIMARY KEY,
+    name VARCHAR(50) UNIQUE NOT NULL
+);
+
+CREATE TABLE students (
+    id SERIAL PRIMARY KEY,
+    name VARCHAR(100) NOT NULL,
+    group_id INTEGER REFERENCES groups(id) ON DELETE SET NULL
+);
+
+CREATE TABLE teachers (
+    id SERIAL PRIMARY KEY,
+    name VARCHAR(100) NOT NULL
+);
+
+CREATE TABLE subjects (
+    id SERIAL PRIMARY KEY,
+    name VARCHAR(100) UNIQUE NOT NULL,
+    teacher_id INTEGER REFERENCES teachers(id) ON DELETE SET NULL
+);
+
+CREATE TABLE grades (
+    id SERIAL PRIMARY KEY,
+    student_id INTEGER REFERENCES students(id) ON DELETE CASCADE,
+    subject_id INTEGER REFERENCES subjects(id) ON DELETE CASCADE,
+    grade INTEGER CHECK (grade BETWEEN 1 AND 100),
+    date TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
